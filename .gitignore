@@ -1,0 +1,21 @@
+# .NET
+bin/
+obj/
+*.user
+*.suo
+
+# Node / React
+node_modules/
+dist/
+.vite/
+
+# Database
+*.db
+
+# Environment/secrets
+.env
+appsettings.Development.json
+
+# Editor
+.vs/
+.vscode/
