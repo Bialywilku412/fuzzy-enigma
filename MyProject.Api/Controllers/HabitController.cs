@@ -31,29 +31,34 @@ public class HabitController : ControllerBase
         return Ok(habit);
     }
 
+    [HttpGet]
+    public async Task<ActionResult<IEnumerable<Habit>>> GetAllHabits()
+    {
+        return await _context.Habits.ToListAsync();
+    }
+
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteHabit(long id)
+    {
+        var habit = await _context.Habits.FindAsync(id);
+
+        if(habit == null)
+            return NotFound();
+
+        _context.Habits.Remove(habit);
+        await _context.SaveChangesAsync();
+
+        return NoContent();
+    }
+
     [HttpPut("{id}")]
-    public async Task<IActionResult> PutHabit(long id, Habit habit)
+    public async Task<ActionResult> PutHabit(long id, Habit habit)
     {
         if(id != habit.Id)
             return BadRequest();
 
-        _context.Entry(habit).State = EntityState.Modified;
-
-        try
-        {
-            await _context.SaveChangesAsync();
-        }
-        catch(DbUpdateConcurrencyException)
-        {
-            if(!HabitExists(id))
-            {
-                return NotFound();
-            }
-            else
-            {
-                throw;
-            }
-        }
+        _context.Habits.Update(habit);
+        await _context.SaveChangesAsync();
 
         return NoContent();
     }
