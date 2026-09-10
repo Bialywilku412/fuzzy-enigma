@@ -9,7 +9,7 @@ function App()
     fetch(`${API_BASE_URL}/habit`)
       .then(response => response.json())
       .then(data => {
-        console.log(data); // ← add this
+        console.log(data);
         setHabits(data);
       });
   }, []);
