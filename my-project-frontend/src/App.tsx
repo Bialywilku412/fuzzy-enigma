@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import AddHabitForm from "./AddHabitForm";
+import HabitForm from "./HabitForm";
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 function App()
@@ -20,14 +21,26 @@ function App()
   }, []);
 
   return (
-    <><ul>
-      {habits.map(habit => (
-        <li key={habit.id}>{habit.id} , {habit.name}</li>
-      ))}
-    </ul><div>
+    <>
+      <table>
+        <tr>
+          <th>Name</th>
+          <th>Category</th>
+          <th>Description</th>
+        </tr>
+        {habits.map(habit => (
+          <HabitForm
+            name={habit.name}
+            category={habit.category}
+            description={habit.description}
+          />
+        ))}
+      </table>
+      <div>
         <AddHabitForm
           onHabitAdded = {fetchHabits}/>
-      </div></>
+      </div>
+    </>
   )
 }
 
