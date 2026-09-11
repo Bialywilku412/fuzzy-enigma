@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import AddHabitForm from "./AddHabitForm";
-import HabitForm from "./HabitForm";
+import HabitRow from "./HabitRow";
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 function App()
@@ -29,7 +29,8 @@ function App()
           <th>Description</th>
         </tr>
         {habits.map(habit => (
-          <HabitForm
+          <HabitRow
+            key={habit.id}
             name={habit.name}
             category={habit.category}
             description={habit.description}

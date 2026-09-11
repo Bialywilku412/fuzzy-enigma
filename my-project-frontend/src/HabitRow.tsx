@@ -1,4 +1,4 @@
-function HabitForm({ name, category, description }){
+function HabitRow({ name, category, description }){
     return(
         <tr>
             <td>{name}</td>
@@ -7,4 +7,4 @@ function HabitForm({ name, category, description }){
         </tr>
 )}
 
-export default HabitForm;
+export default HabitRow;
