@@ -1,9 +1,10 @@
-function HabitForm()
-{
-    return (
-        <div>
-            <h2>Add Habit</h2>
-            <form></form> 
-        </div>
-    )
-}
+function HabitForm({ name, category, description }){
+    return(
+        <tr>
+            <td>{name}</td>
+            <td>{category}</td>
+            <td>{description}</td>
+        </tr>
+)}
+
+export default HabitForm;
