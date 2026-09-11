@@ -1,48 +1,20 @@
 import { useEffect, useState } from "react";
-import AddHabitForm from "./AddHabitForm";
-import HabitRow from "./HabitRow";
+import Habits from "./Habits"
+import { BrowserRouter, Routes, Route, Outlet, Link } from "react-router-dom";
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 function App()
 {
-  const [habits, setHabits] = useState([]);
-
-  function fetchHabits(){
-     fetch(`${API_BASE_URL}/habit`)
-      .then(response => response.json())
-      .then(data => {
-        console.log(data);
-        setHabits(data);
-      });
-  }
-
-  useEffect(() => {
-    fetchHabits();
-  }, []);
-
-  return (
-    <>
-      <table>
-        <tr>
-          <th>Name</th>
-          <th>Category</th>
-          <th>Description</th>
-        </tr>
-        {habits.map(habit => (
-          <HabitRow
-            key={habit.id}
-            name={habit.name}
-            category={habit.category}
-            description={habit.description}
-          />
-        ))}
-      </table>
-      <div>
-        <AddHabitForm
-          onHabitAdded = {fetchHabits}/>
-      </div>
-    </>
-  )
+  return(
+    <BrowserRouter>
+      <Routes>
+        <Route element={<Habits />}>
+          <Route index element={<Habits />} />
+          <Route path="missions" element={<Habits />} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
+  );
 }
 
 export default App;
