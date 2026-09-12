@@ -1,10 +1,20 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 import AddHabitForm from "./AddHabitForm";
 import HabitRow from "./HabitRow";
+import HabitsTable from "./HabitsTabel"
+
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 function Habits(){
     const [habits, setHabits] = useState([]);
+
+    const navigate = useNavigate();
+
+    function navigateToHabit() {
+        navigate(`/habits/${id}`);
+    }
 
     function fetchHabits(){
         fetch(`${API_BASE_URL}/habit`)
@@ -21,26 +31,8 @@ function Habits(){
 
     return (
         <>
-        <table>
-            <tr>
-            <th>Name</th>
-            <th>Category</th>
-            <th>Description</th>
-            </tr>
-            {habits.map(habit => (
-            <HabitRow
-                key={habit.id}
-                id={habit.id}
-                name={habit.name}
-                category={habit.category}
-                description={habit.description}
-            />
-            ))}
-        </table>
-        <div>
-            <AddHabitForm
-            onHabitAdded = {fetchHabits}/>
-        </div>
+        <HabitsTable habits={habits} />
+        <AddHabitForm onHabitAdded = {fetchHabits}/>
         </>
     )
 }
