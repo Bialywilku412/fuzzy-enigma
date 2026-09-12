@@ -29,7 +29,7 @@ function HabitRow({ data: { id, name, category, description } }){
     const navigate = useNavigate();
 
     function navigateToHabit() {
-        navigate(`/habits/${id}`);
+        navigate(`/habit/${id}`);
     }
 
     return(
@@ -37,6 +37,11 @@ function HabitRow({ data: { id, name, category, description } }){
             <TableCell> {name} </TableCell>
             <TableCell> {category} </TableCell>
             <TableCell> {description} </TableCell>
+            <TableCell>
+                <button>
+                    Delete
+                </button>
+            </TableCell>
         </StyledTableRow>
 )}
 
