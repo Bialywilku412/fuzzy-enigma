@@ -1,8 +1,6 @@
-import { useEffect, useState } from "react";
 import Habits from "./Habits"
-import Navbar from "./NavBar";
-import { BrowserRouter, Routes, Route, Outlet, Link } from "react-router-dom";
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+import Navbar from "./Navbar";
+import { BrowserRouter, Routes, Route, } from "react-router-dom";
 
 function App()
 {
