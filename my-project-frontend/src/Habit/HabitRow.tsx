@@ -1,6 +1,5 @@
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import "./App.css";
 
 const StyledTableRow = styled.div`
   display: grid;

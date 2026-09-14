@@ -1,5 +1,5 @@
-import Habit from "./Habit";
-import Habits from "./Habits"
+import Habit from "./Habit/Habit";
+import Habits from "./Habit/Habits"
 import Navbar from "./Navbar";
 import { BrowserRouter, Routes, Route, } from "react-router-dom";
 
