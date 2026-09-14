@@ -8,13 +8,20 @@ const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 function Habits(){
     const [habits, setHabits] = useState([]);
 
-    function fetchHabits(){
-        fetch(`${API_BASE_URL}/habit`)
-        .then(response => response.json())
-        .then(data => {
-            console.log(data);
-            setHabits(data);
+    async function fetchHabits(){
+        const response = await fetch(`${API_BASE_URL}/habit`)
+        const data = await response.json();
+        setHabits(data);
+    }
+
+    async function deleteHabit(id){
+        const response = await fetch(`${API_BASE_URL}/habit/${id}`, {
+            method: 'DELETE'
         });
+
+        if (response.ok) {
+            fetchHabits();
+        }
     }
 
     useEffect(() => {
@@ -23,7 +30,10 @@ function Habits(){
 
     return (
         <>
-        <HabitsTable habits={habits} />
+        <HabitsTable
+            habits={habits}
+            onDeleteHabit={deleteHabit}
+        />
         <AddHabitForm onHabitAdded = {fetchHabits}/>
         </>
     )
