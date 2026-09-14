@@ -5,7 +5,7 @@ import "./App.css";
 const StyledTableRow = styled.div`
   display: grid;
   height: 30px;
-  grid-template-columns: 180px 1fr 80px;
+  grid-template-columns: 180px 1fr 80px 80px;
   cursor: pointer;
   align-items: center;
   padding: 4px;
@@ -25,7 +25,14 @@ const TableCell = styled.div`
   `}
 `;
 
-function HabitRow({ data: { id, name, category, description } }){
+const DeleteButton = styled.button`
+  background-color: red;
+  color: white;
+  border: none;
+  cursor: pointer;
+`;
+
+function HabitRow({onDeleteHabit ,data: { id, name, category, description } }){
     const navigate = useNavigate();
 
     function navigateToHabit() {
@@ -38,9 +45,15 @@ function HabitRow({ data: { id, name, category, description } }){
             <TableCell> {category} </TableCell>
             <TableCell> {description} </TableCell>
             <TableCell>
-                <button>
-                    Delete
-                </button>
+                <DeleteButton
+                  onClick={(e) =>
+                    {
+                      e.stopPropagation();
+                      onDeleteHabit(id)
+                    }}
+                >
+                  Delete
+                </DeleteButton>
             </TableCell>
         </StyledTableRow>
 )}
