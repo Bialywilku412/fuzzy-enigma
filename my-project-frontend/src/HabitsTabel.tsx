@@ -8,11 +8,15 @@ const StyledTable = styled.div`
   min-height: 300px;
 `;
 
-function HabitsTable({ habits }) {
+function HabitsTable({ habits, onDeleteHabit }) {
     return (
         <StyledTable>
             {habits.map((data) => (
-                <HabitRow key={data.id} data={data} />
+                <HabitRow
+                    key={data.id}
+                    data={data}
+                    onDeleteHabit={onDeleteHabit}
+                />
             ))}
         </StyledTable>
     );
