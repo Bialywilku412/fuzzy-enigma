@@ -22,7 +22,7 @@ function AddHabitForm({ onHabitAdded })
         })
         .then(response => response.json())
         .then(createdHabit => {
-            onHabitAdded();
+            onHabitAdded(createdHabit);
         })
     }
 
