@@ -1,5 +1,6 @@
 import Habit from "./Habit/Habit";
 import Habits from "./Habit/Habits"
+import TodoItems from "./ToDoList/TodoItems";
 import Navbar from "./Navbar";
 import { BrowserRouter, Routes, Route, } from "react-router-dom";
 
@@ -10,11 +11,11 @@ function App()
     <BrowserRouter>
       <Navbar />
       <Routes>
-        <Route element={<Habits />}>
           <Route index element={<Habits />} />
-          <Route path="habits" element={<Habits />} />
+          <Route path="/habits" element={<Habits />} />
           <Route path="/habit/:id" element={<Habit />} />
-        </Route>
+
+          <Route path="/todo" element={<TodoItems />} />
       </Routes>
     </BrowserRouter>
     </>
