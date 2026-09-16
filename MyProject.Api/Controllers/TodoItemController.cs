@@ -28,6 +28,7 @@ public class TodoItemController : ControllerBase
 
         return Ok(item);
     }
+
     [HttpPost]
     public async Task<ActionResult<TodoItem>> PostTodoItem(TodoItem item)
     {
@@ -37,8 +38,9 @@ public class TodoItemController : ControllerBase
         _context.TodoItems.Add(item);
         await _context.SaveChangesAsync();
 
-        return Ok();
+        return Ok(item);
     }
+
     [HttpDelete("{id}")]
     public async Task<ActionResult> DeleteTodoItem(long id)
     {
