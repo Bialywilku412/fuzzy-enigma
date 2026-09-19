@@ -3,10 +3,12 @@ import styled from "styled-components";
 const StyledTableRow = styled.div`
   display: grid;
   height: 30px;
-  grid-template-columns: 180px 1fr 80px 80px;
+  grid-template-columns: 180px 1fr 80px;
   cursor: pointer;
   align-items: center;
   padding: 4px;
+  text-decoration: ${({ isDone }) => (isDone ? "line-through" : "none")};
+  opacity: ${({ isDone }) => (isDone ? 0.5 : 1)};
   &:hover {
     background-color: lightgray;
   }
@@ -32,11 +34,24 @@ const DeleteButton = styled.button`
 
 function TodoItemRow({ onDeleteTodoItem, onUpdateTodoItem, data: {id, name, date, isDone} }){
     return(
-        <StyledTableRow>
+      <StyledTableRow 
+        isDone={isDone}
+        onClick={() => onUpdateTodoItem(id)}
+      >
         <TableCell>{name}</TableCell>
         <TableCell>{date}</TableCell>
-        <TableCell>{isDone}</TableCell>
-    </StyledTableRow>
+        <TableCell>
+          <DeleteButton
+            onClick={(e) =>
+              {
+                e.stopPropagation();
+                onDeleteTodoItem(id);
+              }}
+          >
+            Delete
+          </DeleteButton>
+        </TableCell>
+      </StyledTableRow>
     );
 }
 
