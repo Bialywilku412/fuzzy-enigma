@@ -22,6 +22,25 @@ function todoItems(){
         }
     }
 
+    const putTodoItem = async (id: number) => {
+        const item = todoItems.find(t => t.id === id);
+        if (!item) return;
+
+        const updatedItem = { ...item, isDone: !item.isDone};
+
+        const response = await fetch(`${API_BASE_URL}/TodoItem/${id}` ,{
+            method: `PUT`,
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(updatedItem)
+        });
+
+        if (response.ok) {
+            fetchTodoItems();
+        }
+    }
+
     useEffect(() => { 
         fetchTodoItems();
     }, [])
@@ -34,7 +53,7 @@ function todoItems(){
             <TodoItemsTable
                 todoItems={todoItems}
                 onDeleteTodoItem={deleteTodoItem}
-                onUpdateTodoItem={deleteTodoItem}/>
+                onUpdateTodoItem={putTodoItem}/>
         </>
     );
 };
