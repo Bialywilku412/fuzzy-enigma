@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 
+import PomodoroModal from "./Components/PomodoroModal";
+
 function Pomodoro() {
     const [time, setTime] = useState(40 * 60000);
     const [rest, setRest] = useState(10 * 60000);
@@ -39,6 +41,7 @@ function Pomodoro() {
             setStart(false);
             setMode(prevMode => prevMode === "work" ? "rest" : "work");
             setTime(mode === "work" ? rest : 40 * 60000)
+            setShowModal(true);
         }
     }, [time]);
 
@@ -92,8 +95,12 @@ function Pomodoro() {
 
     <div className="App">
 
-    <Popup/>
-    
+    <PomodoroModal
+        show={showModal}
+        onClose={() => setShowModal(false)}
+        mode={mode}
+    />
+
     <button onClick={() => adjustTimer("40:10")}>40:10</button>
 
     <button onClick={() => adjustTimer("incHours")}>&#8679;</button>
