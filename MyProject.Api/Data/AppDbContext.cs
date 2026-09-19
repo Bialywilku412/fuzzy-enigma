@@ -6,4 +6,5 @@ public class AppDbContext : DbContext
     public DbSet<Habit> Habits { get; set; }
     public DbSet<TodoItem> TodoItems { get; set; }
     public DbSet<StoicQuote> StoicQuotes { get; set; }
+    public DbSet<User> Users { get; set; }
 }
