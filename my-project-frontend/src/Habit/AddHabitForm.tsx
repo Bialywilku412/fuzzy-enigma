@@ -1,5 +1,5 @@
 import { useState, type FormEvent } from "react";
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+import { apiFetch } from "../api";
 
 type AddHabitFormProps = {
     onHabitAdded: () => void;
@@ -13,24 +13,16 @@ function AddHabitForm({ onHabitAdded }: AddHabitFormProps)
         description: ""
     });
 
-    function handleSubmit(e: FormEvent<HTMLFormElement>) 
+    async function handleSubmit(e: FormEvent<HTMLFormElement>) 
     {
         e.preventDefault();
 
-        fetch(`${API_BASE_URL}/habit`, {
+        await apiFetch("habit", {
             method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
             body: JSON.stringify(newHabit)
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`Failed to add habit: ${response.status}`);
-            }
-
-            onHabitAdded();
-        })
+        });
+        
+        onHabitAdded();
     }
 
     return (
