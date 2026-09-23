@@ -1,8 +1,10 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 
 [Route("api/[controller]")]
 [ApiController]
+[Authorize]
 public class HabitController : ControllerBase
 {
     private readonly AppDbContext _context;

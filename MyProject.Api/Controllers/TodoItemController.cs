@@ -1,8 +1,10 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 [Route("api/[controller]")]
 [ApiController]
+[Authorize]
 public class TodoItemController : ControllerBase
 {
     private readonly AppDbContext _context;
