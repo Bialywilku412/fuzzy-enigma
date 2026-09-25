@@ -1,6 +1,7 @@
 import { useEffect, useState} from "react";
 import AddTodoItemForm from "./AddTodoItem";
 import TodoItemsTable from "./TodoItemsTabel";
+import { apiFetch } from "../api";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
@@ -8,18 +9,16 @@ function todoItems(){
     const [todoItems, setTodoItems] = useState([]);
 
     const fetchTodoItems = async () => {
-        const response = await fetch(`${API_BASE_URL}/TodoItem`);
-        const data = await response.json();
+        const data = await apiFetch("TodoItem");
         setTodoItems(data);
     }
 
     const deleteTodoItem = async (id: number) => {
-        const response = await fetch(`${API_BASE_URL}/TodoItem/${id}` ,{
-            method: `DELETE`
-        });
-        if(response.ok){
-            fetchTodoItems();
-        }
+        await apiFetch(`TodoItem/${id}`, {
+            method: "DELETE"
+        })
+
+        fetchTodoItems();
     }
 
     const putTodoItem = async (id: number) => {
@@ -28,17 +27,12 @@ function todoItems(){
 
         const updatedItem = { ...item, isDone: !item.isDone};
 
-        const response = await fetch(`${API_BASE_URL}/TodoItem/${id}` ,{
-            method: `PUT`,
-            headers: {
-                "Content-Type": "application/json"
-            },
+        await apiFetch(`TodoItem/${id}`, {
+            method: "PUT",
             body: JSON.stringify(updatedItem)
         });
 
-        if (response.ok) {
-            fetchTodoItems();
-        }
+        fetchTodoItems();
     }
 
     useEffect(() => { 
