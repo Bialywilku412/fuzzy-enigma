@@ -1,4 +1,5 @@
 import { useState, type FormEvent } from "react";
+import { apiFetch } from "../api";
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 type AddTodoItemFormProps = {
@@ -12,24 +13,19 @@ function AddTodoItemForm({ onTodoItemAdded }: AddTodoItemFormProps){
         isDone: false
     });
 
-    function handleSubmit(e: FormEvent<HTMLFormElement>)
+    async function handleSubmit(e: FormEvent<HTMLFormElement>)
     {
         e.preventDefault();
-
-        fetch(`${API_BASE_URL}/TodoItem`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(newTodoItem)
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`Failed to add todo item: ${response.status}`);
+        
+        await apiFetch(
+            "TodoItem",
+            {
+               method: "POST",
+               body: JSON.stringify(newTodoItem)
             }
+        )
 
-            onTodoItemAdded();
-        });
+        onTodoItemAdded();
     };
 
     return(
