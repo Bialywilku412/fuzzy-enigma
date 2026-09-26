@@ -7,4 +7,5 @@ public class AppDbContext : DbContext
     public DbSet<TodoItem> TodoItems { get; set; }
     public DbSet<StoicQuote> StoicQuotes { get; set; }
     public DbSet<User> Users { get; set; }
+    public DbSet<FocusSession> FocusSessions { get; set; }
 }
