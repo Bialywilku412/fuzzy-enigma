@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 [Route("api/[controller]")]
 [ApiController]
@@ -17,13 +19,23 @@ public class TodoItemController : ControllerBase
     [HttpGet]
     public async Task<ActionResult<IEnumerable<TodoItem>>> GetAllTodoItems()
     {
-        return await _context.TodoItems.ToListAsync();
+        var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        var userId = long.Parse(userIdClaim);
+
+        var userTodoItems = await _context.TodoItems
+           .Where(t => t.UserId == userId)
+           .ToListAsync();
+
+        return Ok(userTodoItems);
     }
 
     [HttpGet("{id}")]
     public async Task<ActionResult<TodoItem>> GetTodoItem(long id)
     {
-        var item = await _context.TodoItems.FindAsync(id);
+        var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        var userId = long.Parse(userIdClaim);
+
+        var item = await _context.TodoItems.FirstOrDefaultAsync(t => t.Id == id && t.UserId == userId);
 
         if(item == null)
             return NotFound();
@@ -32,10 +44,24 @@ public class TodoItemController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult<TodoItem>> PostTodoItem(TodoItem item)
+    public async Task<ActionResult<TodoItem>> PostTodoItem(CreateTodoItemRequest request)
     {
-        if(item == null)
-            return BadRequest();
+        var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        var userId = long.Parse(userIdClaim);
+
+        var user = await _context.Users.FindAsync(userId);
+
+        if (user == null)
+            return NotFound();
+
+        TodoItem item = new TodoItem
+        {
+            Name = request.Name,
+            Date = request.Date,
+            IsDone = request.IsDone,
+            UserId = userId,
+            User = user
+        };
 
         _context.TodoItems.Add(item);
         await _context.SaveChangesAsync();
@@ -46,7 +72,10 @@ public class TodoItemController : ControllerBase
     [HttpDelete("{id}")]
     public async Task<ActionResult> DeleteTodoItem(long id)
     {
-        var item = await _context.TodoItems.FindAsync(id);
+        var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        var userId = long.Parse(userIdClaim);
+
+        var item = await _context.TodoItems.FirstOrDefaultAsync(t => t.Id == id && t.UserId == userId);
         if(item == null)
             return BadRequest();
 
@@ -57,13 +86,23 @@ public class TodoItemController : ControllerBase
     }
 
     [HttpPut("{id}")]
-    public async Task<ActionResult> PutTodoItem(long id, TodoItem item)
+    public async Task<ActionResult> PutTodoItem(long id, UpdateTodoItemRequest request)
     {
-        if (id != item.Id)
-            return BadRequest();
+        var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        var userId = long.Parse(userIdClaim);
 
-        _context.TodoItems.Update(item);
+        var existing = await _context.TodoItems
+            .FirstOrDefaultAsync(t => t.Id == id && t.UserId == userId);
+
+        if (existing == null)
+            return NotFound();
+
+        existing.Name = request.Name;
+        existing.Date = request.Date;
+        existing.IsDone = request.IsDone;
+
         await _context.SaveChangesAsync();
+
         return NoContent();
     }
 }
