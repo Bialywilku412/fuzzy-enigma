@@ -1,5 +1,6 @@
-using Microsoft.AspNetCore.Mvc;
+using Azure.Core;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 
@@ -39,7 +40,6 @@ public class HabitController : ControllerBase
 
         if (user == null)
             return NotFound();
-        Console.WriteLine(user);
 
         var habit = new Habit
         {
@@ -88,24 +88,21 @@ public class HabitController : ControllerBase
     }
 
     [HttpPut("{id}")]
-    public async Task<ActionResult> PutHabit(long id, Habit habit)
+    public async Task<ActionResult> PutHabit(long id, UpdateHabitRequest request)
     {
-        if (id != habit.Id)
-            return BadRequest();
-
         var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         var userId = long.Parse(userIdClaim);
 
         var existing = await _context.Habits
-            .AsNoTracking()
-            .FirstOrDefaultAsync(h => h.Id == id && h.UserId == userId);
+            .FirstOrDefaultAsync(t => t.Id == id && t.UserId == userId);
 
         if (existing == null)
             return NotFound();
 
-        // prevent changing ownership
-        habit.UserId = userId;
-        _context.Habits.Update(habit);
+        existing.Name = request.Name;
+        existing.Category = request.Category;
+        existing.Description = request.Description;
+
         await _context.SaveChangesAsync();
 
         return NoContent();
