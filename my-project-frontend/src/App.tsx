@@ -1,9 +1,9 @@
-import Habit from "./Habit/Habit";
-import Habits from "./Habit/Habits"
-import TodoItems from "./ToDoList/TodoItems";
-import Navbar from "./Navbar";
+import Habit from "./Features/Habit/Habit";
+import Habits from "./Features/Habit/Habits"
+import TodoItems from "./Features/ToDoList/TodoItems";
+import Navbar from "./Components/Navbar";
 import { BrowserRouter, Routes, Route, } from "react-router-dom";
-import Pomodoro from "./Pomodoro";
+import Pomodoro from "./Features/Pomodoro/Pomodoro";
 import Login from "./Login";
 
 function App()
