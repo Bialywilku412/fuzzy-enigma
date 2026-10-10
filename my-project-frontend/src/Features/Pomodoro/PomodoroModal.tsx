@@ -1,4 +1,10 @@
-function PomodoroModal({ show, onClose, mode }) {
+type PomodoroModalProps = {
+    show: boolean
+    onClose: () => void;
+    mode: string;
+}
+
+function PomodoroModal({ show, onClose, mode } : PomodoroModalProps) {
 
     return(
         <div

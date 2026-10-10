@@ -1,5 +1,6 @@
 import TodoItemRow from "./TodoItemRow";
 import styled from "styled-components";
+import type { TodoItem } from "../../Types/TodoItem";
 
 const StyledTable = styled.div`
   display: grid;
@@ -8,7 +9,13 @@ const StyledTable = styled.div`
   min-height: 300px;
 `;
 
-function TodoItemsTable({ todoItems, onDeleteTodoItem, onUpdateTodoItem }) {
+type TodoItemTableProps = {
+    todoItems: TodoItem[];
+    onDeleteTodoItem: (id: number) => void;
+    onUpdateTodoItem: (id: number) => void;
+}
+
+function TodoItemsTable({ todoItems, onDeleteTodoItem, onUpdateTodoItem } : TodoItemTableProps) {
     return(
         <StyledTable>
             {todoItems.map((data) => (

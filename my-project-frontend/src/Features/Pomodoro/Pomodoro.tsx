@@ -41,7 +41,6 @@ function Pomodoro() {
             } finally {
                 setLoading(false);
             }
-            
         }
 
     function countdown()
@@ -77,94 +76,71 @@ function Pomodoro() {
     }, [time]);
 
     function adjustTimer(input) {
-
-    if (!start) {
-
-        switch (input) {
-
-        case "40:10":
-
-            setTime(prevTime => prevTime = 60000 * 40)
-            setRest(prevRest => prevRest = 60000 * 10)
-
-            break;
-
-        case "incSeconds":
-
-            setTime(prevTime => prevTime + 1000)
-
-            break;
-
-        case "decHours":
-
-            setTime(prevTime => prevTime - 3600000)
-            break;
-
-        case "decMinutes":
-
-            setTime(prevTime => prevTime - 60000)
-
-            break;
-
-        case "decSeconds":
-
-            setTime(prevTime => prevTime - 1000)
-
-            break;
-
-        default:
-
-            break;
-
+        if (!start) {
+            switch (input) {
+                case "40:10":
+                    setTime(prevTime => prevTime = 60000 * 40)
+                    setRest(prevRest => prevRest = 60000 * 10)
+                    break;
+                case "incSeconds":
+                    setTime(prevTime => prevTime + 1000)
+                    break;
+                case "decHours":
+                    setTime(prevTime => prevTime - 3600000)
+                    break;
+                case "decMinutes":
+                    setTime(prevTime => prevTime - 60000)
+                    break;
+                case "decSeconds":
+                    setTime(prevTime => prevTime - 1000)
+                    break;
+                default:
+                    break;
+            }
         }
-
-    }
-
     }
 
     return (
+        <div className="App">
 
-    <div className="App">
+            <PomodoroModal
+                show={showModal}
+                onClose={() => setShowModal(false)}
+                mode={mode}
+            />
 
-    <PomodoroModal
-        show={showModal}
-        onClose={() => setShowModal(false)}
-        mode={mode}
-    />
+            <button onClick={() => adjustTimer("40:10")}>40:10</button>
 
-    <button onClick={() => adjustTimer("40:10")}>40:10</button>
+            <button onClick={() => adjustTimer("incHours")}>&#8679;</button>
 
-    <button onClick={() => adjustTimer("incHours")}>&#8679;</button>
+            <button onClick={() => adjustTimer("40:10")}>&#8679;</button>
 
-    <button onClick={() => adjustTimer("40:10")}>&#8679;</button>
+            <button onClick={() => adjustTimer("incSeconds")}>&#8679;</button>
 
-    <button onClick={() => adjustTimer("incSeconds")}>&#8679;</button>
+            <div>{hours} : {minutes} : {seconds}</div>
 
-    <div>{hours} : {minutes} : {seconds}</div>
+            <button onClick={() => adjustTimer("decHours")}>&#8681;</button>
 
-    <button onClick={() => adjustTimer("decHours")}>&#8681;</button>
+            <button onClick={() => adjustTimer("decMinutes")}>&#8681;</button>
 
-    <button onClick={() => adjustTimer("decMinutes")}>&#8681;</button>
+            <button onClick={() => adjustTimer("decSeconds")}>&#8681;</button> <br/><br/>
 
-    <button onClick={() => adjustTimer("decSeconds")}>&#8681;</button> <br/><br/>
+            <button onClick={() => setStart(true)}>Start</button>
 
-    <button onClick={() => setStart(true)}>Start</button>
+            <button onClick={() => setStart(false)}>Stop</button>
 
-    <button onClick={() => setStart(false)}>Stop</button>
+            <button onClick={() => {setStart(false); setTime(0)}}>Reset</button>
 
-    <button onClick={() => {setStart(false); setTime(0)}}>Reset</button>
-
-    <form>
-        <label>What habit:</label>
-        <select name="habits">
-         {habits.map((data) => (
-                <option value={data.name}>{data.name}</option>
-            ))}
-        </select>
-    </form>
-    </div>
+            <form>
+                <label>What habit:</label>
+                <select name="habits">
+                {habits.map((data) => (
+                        <option value={data.name}>{data.name}</option>
+                    ))}
+                </select>
+            </form>
+        </div>
     );
-
 }
 
 export default Pomodoro;

@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import type { Habit } from "../../Types/Habit";
 
 const StyledTableRow = styled.div`
   display: grid;
@@ -13,12 +14,12 @@ const StyledTableRow = styled.div`
   }
 `;
 
-const TableCell = styled.div`
+const TableCell = styled.div<{ $justifyRight?: boolean }>`
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
-  ${({ justifyRight }) =>
-    justifyRight &&
+  ${({ $justifyRight }) =>
+    $justifyRight &&
     `
     justify-self: right; 
   `}
@@ -31,7 +32,12 @@ const DeleteButton = styled.button`
   cursor: pointer;
 `;
 
-function HabitRow({onDeleteHabit ,data: { id, name, category, description } }){
+type HabitRowProps = {
+  onDeleteHabit: (id: number) => void;
+  data: Habit;
+}
+
+function HabitRow({ onDeleteHabit, data: { id, name, category, description } } : HabitRowProps){
     const navigate = useNavigate();
 
     function navigateToHabit() {

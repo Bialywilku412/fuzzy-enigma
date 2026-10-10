@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import HabitRow from "./HabitRow";
+import type { Habit } from "../../Types/Habit";
 
 const StyledTable = styled.div`
   display: grid;
@@ -8,7 +9,12 @@ const StyledTable = styled.div`
   min-height: 300px;
 `;
 
-function HabitsTable({ habits, onDeleteHabit }) {
+type HabitsTabelProps = {
+    habits: Habit[];
+    onDeleteHabit: (id: number) => void;
+}
+
+function HabitsTable({ habits, onDeleteHabit } : HabitsTabelProps) {
     return (
         <StyledTable>
             {habits.map((data) => (

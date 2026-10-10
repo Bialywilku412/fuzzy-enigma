@@ -2,47 +2,77 @@ import { useEffect, useState} from "react";
 import AddTodoItemForm from "./AddTodoItem";
 import TodoItemsTable from "./TodoItemsTabel";
 import { apiFetch } from "../../api";
-
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+import type { TodoItem } from "../../Types/TodoItem";
 
 function todoItems(){
-    const [todoItems, setTodoItems] = useState([]);
+    const [todoItems, setTodoItems] = useState<TodoItem[]>([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
 
     const fetchTodoItems = async () => {
-        const data = await apiFetch("TodoItem");
-        setTodoItems(data);
+        try {
+            const data = await apiFetch("TodoItem");
+            setTodoItems(data);
+        } catch (err) {
+            console.error(err);
+            setError("Could not load Todo items");
+        } finally {
+            setLoading(false);
+        }
     }
 
     const deleteTodoItem = async (id: number) => {
-        await apiFetch(`TodoItem/${id}`, {
+        try {
+            await apiFetch(`TodoItem/${id}`, {
             method: "DELETE"
         })
-
         fetchTodoItems();
+        } catch (err) {
+            console.error(err);
+            setError("Could not delete Todo item");
+        } finally {
+            setLoading(false);
+        }
     }
 
     const putTodoItem = async (id: number) => {
-        const item = todoItems.find(t => t.id === id);
+        const item = todoItems?.find(t => t.id === id);
         if (!item) return;
 
         const updatedItem = { ...item, isDone: !item.isDone};
-
-        await apiFetch(`TodoItem/${id}`, {
-            method: "PUT",
-            body: JSON.stringify(updatedItem)
-        });
-
-        fetchTodoItems();
+        
+        try {
+            await apiFetch(`TodoItem/${id}`, {
+                method: "PUT",
+                body: JSON.stringify(updatedItem)
+            });
+            fetchTodoItems();
+        } catch (err) {
+            console.error(err);
+            setError("Could not edit Todo item");
+        } finally {
+            setLoading(false);
+        }
     }
 
     useEffect(() => { 
         fetchTodoItems();
     }, [])
 
+    if (loading) {
+        return <p>Loading Todo items</p>
+    }
+
+    if (error) {
+        return <p>{error}</p>
+    }
+
     return(
         <>
             <AddTodoItemForm
                 onTodoItemAdded={fetchTodoItems}
+                setError={setError}
+                setLoading={setLoading}
             />
             <TodoItemsTable
                 todoItems={todoItems}
